@@ -197,6 +197,17 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         currentListSize = list.size();
     }
 
+    //added by @10MINT
+    //returns the list of the listview
+    @SimpleFunction
+    public YailList Get() {
+        ArrayList stringRepresentation = new ArrayList();
+        for (Element elem : elementList) {
+            stringRepresentation.add(YailList.YailListElementToString(elem.toYailList()));
+        }
+        return YailList.makeList(stringRepresentation);
+    }
+
     @SimpleFunction
     public void AddElement(YailList element) {
         int elementListSize = elementList.size();
