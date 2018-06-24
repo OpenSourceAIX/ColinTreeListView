@@ -91,6 +91,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     private final Handler handler = new Handler();
 
     private int lastClickedElement = 0;
+    private int lastLongClickedElement = 0;
     private int lastClickedIcon = 0;
     private int lastClickedExtraButton = 0;
 
@@ -377,6 +378,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     }
     @SimpleEvent
     public boolean ElementLongClick(int elementIndex) {
+        lastLongClickedElement = elementIndex + 1;
         return EventDispatcher.dispatchEvent(this, "ElementLongClick", elementIndex + 1);
     }
     @SimpleEvent
@@ -427,6 +429,10 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public int LastClickedElement() {
         return lastClickedElement;
+    }
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+    public int LastLongClickedElement() {
+        return lastLongClickedElement;
     }
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public int LastClickedIcon() {
