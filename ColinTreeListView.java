@@ -202,9 +202,9 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     //returns the list of the listview
     @SimpleFunction
     public YailList Get() {
-        ArrayList stringRepresentation = new ArrayList();
+        ArrayList<YailList> stringRepresentation = new ArrayList<YailList>();
         for (Element elem : elementList) {
-            stringRepresentation.add(YailList.YailListElementToString(elem.toYailList()));
+            stringRepresentation.add(elem.toYailList());
         }
         return YailList.makeList(stringRepresentation);
     }
