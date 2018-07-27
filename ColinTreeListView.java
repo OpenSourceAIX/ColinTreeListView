@@ -81,6 +81,8 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     //   Fixed Error of Visiblility
     //   Added ClearCache() & ClearAllCache() -- still in test, it should works
     // VERSION 10:
+    //   Added Get by @10MINT 
+    //   Added LastLongClickedElement by @10MINT 
     //   Fixes Label cannot click on some platforms
     public static final int VERSION = 10;
     
