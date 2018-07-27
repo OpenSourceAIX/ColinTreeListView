@@ -902,6 +902,9 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             
             labelBeforeIcon = new Label(ha);
             labelBeforeIcon.Text("");
+            labelBeforeIcon.getView().setOnClickListener(this);
+            labelBeforeIcon.getView().setOnLongClickListener(this);
+            labelBeforeIcon.getView().setOnTouchListener(this);
             
             icon = new ButtonBase(ha) {
                 @Override
@@ -924,12 +927,18 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             
             labelAfterIcon = new Label(ha);
             labelAfterIcon.Text("");
+            labelAfterIcon.getView().setOnClickListener(this);
+            labelAfterIcon.getView().setOnLongClickListener(this);
+            labelAfterIcon.getView().setOnTouchListener(this);
             
             size2Label = new Label(ha);
             size2Label.Width(LENGTH_FILL_PARENT);
             size2Label.Text("Element Text");
             size2Label.TextAlignment(ALIGNMENT_NORMAL);
             size2Label.BackgroundColor(COLOR_NONE);
+            size2Label.getView().setOnClickListener(this);
+            size2Label.getView().setOnLongClickListener(this);
+            size2Label.getView().setOnTouchListener(this);
             
             size3Va = new VerticalArrangement(ha);
             size3Va.AlignVertical(ComponentConstants.GRAVITY_CENTER_VERTICAL);
@@ -939,14 +948,23 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             size3MainText = new Label(size3Va);
             size3MainText.Text("Element Main Text");
             size3MainText.TextAlignment(ALIGNMENT_NORMAL);
+            size3MainText.getView().setOnClickListener(this);
+            size3MainText.getView().setOnLongClickListener(this);
+            size3MainText.getView().setOnTouchListener(this);
             
             size3SubText = new Label(size3Va);
             size3SubText.Text("Element Sub Text");
             size3SubText.TextAlignment(ALIGNMENT_NORMAL);
+            size3SubText.getView().setOnClickListener(this);
+            size3SubText.getView().setOnLongClickListener(this);
+            size3SubText.getView().setOnTouchListener(this);
 
             labelBeforeExtraButton = new Label(ha);
             labelBeforeExtraButton.Text("");
             labelBeforeExtraButton.Width(2);
+            labelBeforeExtraButton.getView().setOnClickListener(this);
+            labelBeforeExtraButton.getView().setOnLongClickListener(this);
+            labelBeforeExtraButton.getView().setOnTouchListener(this);
 
             extraButton = new ButtonBase(ha) {
                 @Override
@@ -970,11 +988,17 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             labelAfterText = new Label(ha);
             labelAfterText.Text("");
             labelAfterText.Width(10);
+            labelAfterText.getView().setOnClickListener(this);
+            labelAfterText.getView().setOnLongClickListener(this);
+            labelAfterText.getView().setOnTouchListener(this);
 
             underline = new Label(container);
             underline.Width(LENGTH_FILL_PARENT);
             underline.Text("");
             underline.HasMargins(false);
+            underline.getView().setOnClickListener(this);
+            underline.getView().setOnLongClickListener(this);
+            underline.getView().setOnTouchListener(this);
             refreshProperties();
 
             currentSize = 0;
