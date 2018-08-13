@@ -45,10 +45,10 @@ import android.widget.ScrollView;
 import android.view.MotionEvent;
 
 @DesignerComponent(version = ColinTreeListView.VERSION,
-    description = "by ColinTree at http://aix.colintree.cn/en/extensions/ColinTreeListView",
     category = ComponentCategory.EXTENSION,
     nonVisible = true,
-    iconName = "aiwebres/icon.png")
+    iconName = "aiwebres/icon.png",
+    helpUrl = "http://aix.colintree.cn/en/extensions/ColinTreeListView.html")
 
 @SimpleObject(external = true)
 @UsesPermissions(permissionNames = "android.permission.INTERNET," +
