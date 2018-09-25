@@ -207,8 +207,8 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     @SimpleFunction
     public YailList Get() {
         ArrayList<YailList> stringRepresentation = new ArrayList<YailList>();
-        for (Element elem : elementList) {
-            stringRepresentation.add(elem.toYailList());
+        for (int i = 1; i <= this.currentListSize; i++) {
+            stringRepresentation.add(GetElement(i));
         }
         return YailList.makeList(stringRepresentation);
     }
@@ -870,7 +870,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
 
 
-    abstract class Element implements OnClickListener, OnLongClickListener, OnTouchListener {
+    abstract class Element implements OnClickListener, OnLongClickListener, OnTouchListener implements Comparable<Element>{
         
         private ComponentContainer container;
 
@@ -1291,6 +1291,21 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                         getSubText());
                 default:
                     return YailList.makeEmptyList();
+            }
+        }
+
+        //added by 10MINT
+        @Override
+        public int compareTo(Element e) {
+            switch (size()) {
+                case 1:
+                    return getText().compareTo(e.getText());
+                case 2:
+                    return getText().compareTo(e.getText());
+                case 3:
+                    return getMainText().compareTo(e.getMainText());
+                default:
+                    return 0;
             }
         }
     }
