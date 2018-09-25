@@ -50,6 +50,14 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
     public String IconImage() {
         return element.getIcon();
     }
+    @SimpleProperty(category = PropertyCategory.APPEARANCE)
+    public void ExtraButtonImage(String value) {
+        element.setExtraButtonImage(value);
+    }
+    @SimpleProperty(category = PropertyCategory.APPEARANCE)
+    public String ExtraButtonImage() {
+        return element.getExtraButtonImage();
+    }
 
     @SimpleProperty(category = PropertyCategory.APPEARANCE)
     public void Text(String text) {
@@ -373,6 +381,14 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
     @SimpleFunction
     public static String IconImage(ColinTreeListView listview, int elementIndex) {
         return listview.getElement(elementIndex).getIcon();
+    }
+@SimpleFunction
+    public static void ExtraButtonImage_(ColinTreeListView listview, int elementIndex, String value) {
+        listview.getElement(elementIndex).setExtraButtonImage(value);
+    }
+    @SimpleFunction
+    public static String ExtraButtonImage(ColinTreeListView listview, int elementIndex) {
+        return listview.getElement(elementIndex).getExtraButtonImage();
     }
 
     @SimpleFunction
