@@ -1,5 +1,5 @@
 {
-    "TranslationTest": {
+    "ColinTreeListView": {
         "en": {
             "component": "ColinTree ListView",
             "helpString": "ColinTreeListView is a higher level ListView, which allow you to adjust the layout of the listview items.",
