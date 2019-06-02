@@ -382,7 +382,7 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
     public static String IconImage(ColinTreeListView listview, int elementIndex) {
         return listview.getElement(elementIndex).getIcon();
     }
-@SimpleFunction
+    @SimpleFunction
     public static void ExtraButtonImage_(ColinTreeListView listview, int elementIndex, String value) {
         listview.getElement(elementIndex).setExtraButtonImage(value);
     }
