@@ -305,7 +305,7 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
     public void ExtraButtonTextFontBold(boolean bold) {
         element.extraButton.FontBold(bold);
     }
-    
+
     @SimpleProperty(category = PropertyCategory.APPEARANCE)
     public float ExtraButtonWidth() {
         return element.extraButton.Width();
@@ -637,7 +637,7 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
     public static void ExtraButtonTextFontBold_(ColinTreeListView listview, int elementIndex, boolean bold) {
         listview.getElement(elementIndex).extraButton.FontBold(bold);
     }
-    
+
     @SimpleFunction
     public static float ExtraButtonWidth(ColinTreeListView listview, int elementIndex) {
         return listview.getElement(elementIndex).extraButton.Width();

@@ -85,13 +85,13 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     //   Added LastLongClickedElement by @10MINT 
     //   Fixes Label cannot click on some platforms
     public static final int VERSION = 10;
-    
+
     private static final String LOG_TAG = "ColinTreeListView";
 
     private final ArrayList<Element> elementList = new ArrayList<Element>();
     private HVArrangement vaContainer = null;
     private int currentListSize = 0;
-    
+
     private final Handler handler = new Handler();
 
     private int lastClickedElement = 0;
@@ -143,12 +143,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     private HashMap<String, CachedImage> iconMap = new HashMap<String, CachedImage>();
 
     private final Form form;
-    
+
 
     private static final YailList makeYailList(Object... obj) {
         return YailList.makeList(obj);
     }
-    
+
 
     public ColinTreeListView(ComponentContainer container) {
         super(container.$form());
@@ -429,7 +429,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     public void ExtraButtonTouchUp(int elementIndex) {
         EventDispatcher.dispatchEvent(this, "ExtraButtonTouchUp", elementIndex + 1);
     }
-    
+
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public int LastClickedElement() {
         return lastClickedElement;
@@ -729,7 +729,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         elementExtraButtonTextFontBold = bold;
         refreshElementProperties();
     }
-    
+
     @SimpleProperty(category = PropertyCategory.APPEARANCE)
     public float ExtraButtonWidth() {
         return elementExtraButtonWidth;
@@ -827,7 +827,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         }
     }
 
-    
+
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public boolean ScrollBottomAfterAdd() {
         return scrollBottomAfterAdd;
@@ -837,7 +837,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     public void ScrollBottomAfterAdd(boolean scroll) {
         scrollBottomAfterAdd = scroll;
     }
-    
+
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public boolean AsyncImageLoad() {
         return asyncImageLoad;
@@ -847,7 +847,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     public void AsyncImageLoad(boolean async) {
         asyncImageLoad = async;
     }
-    
+
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public boolean CacheImage() {
         return cacheImage;
@@ -857,7 +857,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     public void CacheImage(boolean cache) {
         cacheImage = cache;
     }
-    
+
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public boolean ExtraButtonEnabled() {
         return extraButtonEnabled;
@@ -871,7 +871,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
 
     abstract class Element implements OnClickListener, OnLongClickListener, OnTouchListener {
-        
+
         private ComponentContainer container;
 
         public static final String NOTICE = "Welcome to improve this extension with plugins :P";
@@ -889,6 +889,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         public final Label underline;
 
         private String iconValue = "";
+        private String extraImagePath = "";
 
         private int currentSize;
 
@@ -896,20 +897,20 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
         public Element(ComponentContainer container, YailList list) {
             this.container = container;
-            
+
             ha = new HorizontalArrangement(container);
             ha.getView().setOnClickListener(this);
             ha.getView().setOnLongClickListener(this);
             ha.getView().setOnTouchListener(this);
             ha.AlignVertical(ComponentConstants.GRAVITY_CENTER_VERTICAL);
             ha.Width(LENGTH_FILL_PARENT);
-            
+
             labelBeforeIcon = new Label(ha);
             labelBeforeIcon.Text("");
             labelBeforeIcon.getView().setOnClickListener(this);
             labelBeforeIcon.getView().setOnLongClickListener(this);
             labelBeforeIcon.getView().setOnTouchListener(this);
-            
+
             icon = new ButtonBase(ha) {
                 @Override
                 public void click() {
@@ -928,13 +929,13 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                     onIconTouchUp();
                 }
             };
-            
+
             labelAfterIcon = new Label(ha);
             labelAfterIcon.Text("");
             labelAfterIcon.getView().setOnClickListener(this);
             labelAfterIcon.getView().setOnLongClickListener(this);
             labelAfterIcon.getView().setOnTouchListener(this);
-            
+
             size2Label = new Label(ha);
             size2Label.Width(LENGTH_FILL_PARENT);
             size2Label.Text("Element Text");
@@ -943,19 +944,19 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             size2Label.getView().setOnClickListener(this);
             size2Label.getView().setOnLongClickListener(this);
             size2Label.getView().setOnTouchListener(this);
-            
+
             size3Va = new VerticalArrangement(ha);
             size3Va.AlignVertical(ComponentConstants.GRAVITY_CENTER_VERTICAL);
             size3Va.AlignHorizontal(ComponentConstants.GRAVITY_LEFT);
             size3Va.Width(LENGTH_FILL_PARENT);
-            
+
             size3MainText = new Label(size3Va);
             size3MainText.Text("Element Main Text");
             size3MainText.TextAlignment(ALIGNMENT_NORMAL);
             size3MainText.getView().setOnClickListener(this);
             size3MainText.getView().setOnLongClickListener(this);
             size3MainText.getView().setOnTouchListener(this);
-            
+
             size3SubText = new Label(size3Va);
             size3SubText.Text("Element Sub Text");
             size3SubText.TextAlignment(ALIGNMENT_NORMAL);
@@ -988,7 +989,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                     onExtraButtonTouchUp();
                 }
             };
-            
+
             labelAfterText = new Label(ha);
             labelAfterText.Text("");
             labelAfterText.Width(10);
@@ -1019,12 +1020,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         public abstract boolean onIconLongClick();
         public abstract void onIconTouchDown();
         public abstract void onIconTouchUp();
-        
+
         public abstract void onExtraButtonClick();
         public abstract boolean onExtraButtonLongClick();
         public abstract void onExtraButtonTouchDown();
         public abstract void onExtraButtonTouchUp();
-        
+
         @Override
         public void onClick(View v) {
             onElementClick();
@@ -1056,13 +1057,13 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             if (refreshLock) {
                 return this;
             }
-            
+
             show();
-            
+
             ha.Height(elementHeight);
 
             labelBeforeIcon.Width(elementWidthBeforeIcon);
-            
+
             icon.Height(elementIconHeight);
             icon.Width(elementIconWidth);
             icon.Shape(elementIconShape);
@@ -1074,18 +1075,18 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                 .setPadding(elementIconPaddings, elementIconPaddings, 
                     elementIconPaddings, elementIconPaddings);
             setIcon(iconValue); // called due to elementIconMultiParams
-            
+
             labelAfterIcon.Width(elementWidthAfterIcon);
-            
+
             size2Label.TextColor(elementTextColor);
             size2Label.FontSize(elementTextFontSize);
             size2Label.FontBold(elementTextFontBold);
-            
+
             size3MainText.TextColor(elementTextColor);
             size3MainText.FontSize(elementTextFontSize);
             size3MainText.FontBold(elementTextFontBold);
             size3MainText.Height(elementTextHeight);
-            
+
             size3SubText.TextColor(elementSubTextColor);
             size3SubText.FontSize(elementSubTextFontSize);
             size3SubText.FontBold(elementSubTextFontBold);
@@ -1105,7 +1106,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                 .setPadding(elementExtraButtonPaddings, elementExtraButtonPaddings, 
                     elementExtraButtonPaddings, elementExtraButtonPaddings);
             setExtraButton();
-            
+
             underline.BackgroundColor(elementUnderlineColor);
             underline.Height(elementUnderlineWidth);
 
@@ -1153,7 +1154,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                         MediaUtil.getBitmapDrawableAsync(form, path, new AsyncCallbackPair<BitmapDrawable>() {
                             @Override
                             public void onFailure(String message) {}
-    
+
                             @Override
                             public void onSuccess(final BitmapDrawable result) {
                                 container.$context().runOnUiThread(new Runnable() {
@@ -1179,6 +1180,14 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             setImageThroughCache(extraButton, elementExtraButtonImage);
             return this;
         }
+        public Element setExtraButtonImage(String path) {
+            this.extraImagePath = path;
+            setImageThroughCache(extraButton, path);
+            return this;
+        }
+        public String getExtraButtonImage() {
+            return this.extraImagePath;
+        }
 
         private void setImageThroughCache(ButtonBase bb, String path) {
             bb.Image(""); // As preload image
@@ -1189,7 +1198,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                 iconMap.put(path, new CachedImage(path, bb));
             }
         }
-        
+
         public Element setText(String text) {
             if (size() < 3) {
                 size2Label.Text(text);
@@ -1225,7 +1234,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         public String getSubText() {
             return (size()<3) ? getText() : size3SubText.Text();
         }
-        
+
         public Element set(YailList list) {
             int arrayLength = list.toArray().length;
             switch (arrayLength) {
@@ -1249,7 +1258,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             Visible(icon, false);
             Visible(size2Label, true);
             Visible(size3Va, false);
-            
+
             size2Label.Text(list.getString(0));
             return this;
         }
@@ -1330,7 +1339,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                 addCallback(bb);
             }
         }
-        
+
         public void addCallback(ButtonBase buttonBase) {
             callback.add(buttonBase);
         }
