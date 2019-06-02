@@ -297,37 +297,31 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         }
 
     }
-    @Deprecated
     @SimpleFunction
     public void SetElement(int elementIndex, YailList element) {
         checkIndex(elementIndex);
         getElement(elementIndex).show().set(element);
     }
-    @Deprecated
     @SimpleFunction
     public void SetElementText(int elementIndex, String text) {
         checkIndex(elementIndex);
         getElement(elementIndex).setText(text);
     }
-    @Deprecated
     @SimpleFunction
     public void SetElementMainText(int elementIndex, String mainText) {
         checkIndex(elementIndex);
         getElement(elementIndex).setMainText(mainText);
     }
-    @Deprecated
     @SimpleFunction
     public void SetElementSubText(int elementIndex, String subText) {
         checkIndex(elementIndex);
         getElement(elementIndex).setSubText(subText);
     }
-    @Deprecated
     @SimpleFunction
     public void SetElementIcon(int elementIndex, String path) {
         checkIndex(elementIndex);
         getElement(elementIndex).setIcon(path);
     }
-    @Deprecated
     @SimpleFunction
     public YailList GetElement(int elementIndex) {
         return getElement(elementIndex).toYailList();
