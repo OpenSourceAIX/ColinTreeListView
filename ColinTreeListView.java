@@ -84,7 +84,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     //   Added Get by @10MINT 
     //   Added LastLongClickedElement by @10MINT 
     //   Fixes Label cannot click on some platforms
-    public static final int VERSION = 10;
+    // VERSION 11:
+    //   Added Translations (need platform supporting)
+    //   Fixed a Get method bug (#11)
+    //   Added ExtraButtonImage in ColinTreeListViewElement
+    //   Removed flag deprecated from all blocks
+    public static final int VERSION = 11;
 
     private static final String LOG_TAG = "ColinTreeListView";
 
