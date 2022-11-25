@@ -908,9 +908,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
                     getElement(i + 1).bgColor = elementAlternateRowColor;
                 else
                     getElement(i + 1).bgColor = elementBgColor;
-            } else {
-                getElement(i + 1).bgColor = elementBgColor;
-            }
+            } 
             getElement(i + 1).refreshProperties();
         }
     }
