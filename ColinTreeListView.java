@@ -89,7 +89,11 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     //   Fixed a Get method bug (#11)
     //   Added ExtraButtonImage in ColinTreeListViewElement
     //   Removed flag deprecated from all blocks
-    public static final int VERSION = 11;
+    // VERSION 12:
+    //  Fixed elementBackgroundColor overwrite after select.
+    //  Added set row background color independently.
+    //  Added support for alternate row colors
+    public static final int VERSION = 12;
 
     private static final String LOG_TAG = "ColinTreeListView";
 
@@ -106,6 +110,8 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
     // Appearance
     private int elementHeight = 57;
+    private int elementBgColor = COLOR_WHITE;
+    private int elementAlternateRowColor = COLOR_LTGRAY;
     private int elementTouchDownColor = COLOR_DEFAULT;
     private int elementWidthBeforeIcon = 7;
     private int elementWidthAfterIcon = 5;
@@ -144,6 +150,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     private boolean asyncImageLoad = false;
     private boolean cacheImage = false;
     private boolean extraButtonEnabled = false;
+    private boolean colorAltRows = false;
 
     private HashMap<String, CachedImage> iconMap = new HashMap<String, CachedImage>();
 
@@ -222,12 +229,23 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     public void AddElement(YailList element) {
         int elementListSize = elementList.size();
         if (currentListSize < elementListSize && elementListSize > 0) {
+            if(colorAltRows) {
+                if((currentListSize) % 2 == 0)
+                    getElement(currentListSize + 1).bgColor = elementAlternateRowColor;
+                else
+                    getElement(currentListSize + 1).bgColor = elementBgColor;
+            }
             getElement(currentListSize + 1)
                 .show()
                 .set(element);
         } else {
             final int elementIndex = currentListSize;
-            elementList.add(new Element(vaContainer, element) {
+            boolean alt = false;
+            if(colorAltRows) {
+                if((currentListSize + 1) % 2 == 0)
+                    alt = true;
+            }
+            elementList.add(new Element(vaContainer, element, alt) {
                 @Override
                 public void onElementClick() {
                     ElementClick(elementIndex);
@@ -305,6 +323,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     @SimpleFunction
     public void SetElement(int elementIndex, YailList element) {
         checkIndex(elementIndex);
+        if(colorAltRows) {
+            if((elementIndex) % 2 == 0)
+                getElement(elementIndex).bgColor = elementAlternateRowColor;
+            else
+                getElement(elementIndex).bgColor = elementBgColor;
+        }
         getElement(elementIndex).show().set(element);
     }
     @SimpleFunction
@@ -377,6 +401,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     @SimpleEvent
     public void ElementClick(int elementIndex) {
         lastClickedElement = elementIndex + 1;
+        toggleSelection(lastClickedElement);
         EventDispatcher.dispatchEvent(this, "ElementClick", elementIndex + 1);
     }
     @SimpleEvent
@@ -430,6 +455,27 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     }
 
     @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+    public int SelectionIndex() {
+        return lastClickedElement;
+    }
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
+    public void SelectionIndex(int elementIndex) {
+        toggleSelection(elementIndex);
+        lastClickedElement = elementIndex;
+
+    }
+
+    private void toggleSelection(int elementIndex) {
+        checkIndex(elementIndex);
+        getElement(elementIndex).selected = true;
+        for (int i = 0; i < currentListSize; i++) {
+            if((i + 1) != elementIndex)
+                getElement(i + 1).selected = false;
+        }
+        refreshElementProperties();
+    }
+
+    @SimpleProperty(category = PropertyCategory.BEHAVIOR)
     public int LastClickedElement() {
         return lastClickedElement;
     }
@@ -457,6 +503,41 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
     @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_NON_NEGATIVE_INTEGER, defaultValue = "57")
     public void ElementHeight(int height) {
         elementHeight = height;
+        refreshElementProperties();
+    }
+
+    @SimpleProperty(category = PropertyCategory.APPEARANCE)
+    public int ElementBackgroundColor() {
+        return elementBgColor;
+    }
+
+    @SimpleProperty
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR,
+        defaultValue = DEFAULT_VALUE_COLOR_WHITE)
+    public void ElementBackgroundColor(int argb) {
+        elementBgColor = argb;
+        refreshElementProperties();
+    }
+
+    @SimpleProperty(category = PropertyCategory.APPEARANCE)
+    public boolean UseAltRowColors() {
+        return colorAltRows;
+    }
+    @SimpleProperty(category = PropertyCategory.APPEARANCE, description = "Use alternate row colors")
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN, defaultValue = "False")
+    public void UseAltRowColors(boolean useAlt) {
+        colorAltRows = useAlt;
+        refreshElementProperties();
+    }
+    @SimpleProperty(category = PropertyCategory.APPEARANCE)
+    public int AlternateRowColor() {
+        return elementAlternateRowColor;
+    }
+    @SimpleProperty
+    @DesignerProperty(editorType = PropertyTypeConstants.PROPERTY_TYPE_COLOR, 
+        defaultValue = DEFAULT_VALUE_COLOR_LTGRAY)
+    public void AlternateRowColor(int argb) {
+        elementAlternateRowColor = argb;
         refreshElementProperties();
     }
 
@@ -822,6 +903,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
     private void refreshElementProperties() {
         for (int i = 0; i < currentListSize; i++) {
+            if(colorAltRows) {
+                if((i + 1) % 2 == 0)
+                    getElement(i + 1).bgColor = elementAlternateRowColor;
+                else
+                    getElement(i + 1).bgColor = elementBgColor;
+            } 
             getElement(i + 1).refreshProperties();
         }
     }
@@ -886,6 +973,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         public final ButtonBase extraButton;
         public final Label labelAfterText;
         public final Label underline;
+        public boolean selected = false;
 
         private String iconValue = "";
         private String extraImagePath = "";
@@ -893,8 +981,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
         private int currentSize;
 
         private boolean refreshLock = false;
+        public int bgColor = elementBgColor;
 
         public Element(ComponentContainer container, YailList list) {
+            this(container, list, false);
+        }
+        public Element(ComponentContainer container, YailList list, boolean useAlt) {
             this.container = container;
 
             ha = new HorizontalArrangement(container);
@@ -903,6 +995,9 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             ha.getView().setOnTouchListener(this);
             ha.AlignVertical(ComponentConstants.GRAVITY_CENTER_VERTICAL);
             ha.Width(LENGTH_FILL_PARENT);
+            if(useAlt)
+                this.bgColor = elementAlternateRowColor;
+            ha.BackgroundColor(bgColor);
 
             labelBeforeIcon = new Label(ha);
             labelBeforeIcon.Text("");
@@ -1027,6 +1122,7 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
 
         @Override
         public void onClick(View v) {
+            selected = true;
             onElementClick();
         }
         @Override
@@ -1034,11 +1130,13 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             return onElementLongClick();
         }
         private void ElementTouchDown() {
-            ha.BackgroundColor(elementTouchDownColor);
+            //ha.BackgroundColor(elementTouchDownColor);
             onElementTouchDown();
         }
         private void ElementTouchUp() {
-            ha.BackgroundColor(0x00FFFFFF);
+            //ha.BackgroundColor(0x00FFFFFF);
+            //if(!selected)
+            //   ha.BackgroundColor(bgColor);
             onElementTouchUp();
         }
         @Override
@@ -1060,6 +1158,12 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             show();
 
             ha.Height(elementHeight);
+            if(selected) {
+                ha.BackgroundColor(elementTouchDownColor);
+            }
+            else {
+                ha.BackgroundColor(bgColor);
+            }
 
             labelBeforeIcon.Width(elementWidthBeforeIcon);
 
@@ -1110,6 +1214,14 @@ public class ColinTreeListView extends AndroidNonvisibleComponent implements Com
             underline.Height(elementUnderlineWidth);
 
             return this;
+        }
+
+        public int getBackgroundColor() {
+            return bgColor;
+        }
+        public void setBackgroundColor(int argb) {
+            bgColor = argb;
+            refreshProperties();
         }
 
         public Element setRefreshLock(boolean lock) {

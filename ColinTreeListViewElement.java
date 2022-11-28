@@ -95,11 +95,13 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
 
     @SimpleProperty(category = PropertyCategory.APPEARANCE)
     public int ElementBackgroundColor() {
-        return element.ha.BackgroundColor();
+        //return element.ha.BackgroundColor();
+        return element.getBackgroundColor();
     }
     @SimpleProperty(category = PropertyCategory.APPEARANCE)
     public void ElementBackgroundColor(int argb) {
-        element.ha.BackgroundColor(argb);
+        //element.ha.BackgroundColor(argb);
+        element.setBackgroundColor(argb);
     }
 
     //------------Properties that exists in ListView--------------
@@ -427,11 +429,13 @@ public class ColinTreeListViewElement extends AndroidNonvisibleComponent {
 
     @SimpleFunction
     public static int ElementBackgroundColor(ColinTreeListView listview, int elementIndex) {
-        return listview.getElement(elementIndex).ha.BackgroundColor();
+        //return listview.getElement(elementIndex).ha.BackgroundColor();
+        return listview.getElement(elementIndex).getBackgroundColor();
     }
     @SimpleFunction
     public static void ElementBackgroundColor_(ColinTreeListView listview, int elementIndex, int argb) {
-        listview.getElement(elementIndex).ha.BackgroundColor(argb);
+        //return listview.getElement(elementIndex).ha.BackgroundColor(argb);
+        listview.getElement(elementIndex).setBackgroundColor(argb);
     }
 
     //------------Properties that exists in ListView--------------
